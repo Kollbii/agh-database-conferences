@@ -20,3 +20,9 @@ University project for DB course in Transact-SQL
 1. ShowPrice(Conf, Workshop)
 
 1. MostActiveCustomer()
+
+1. MostActiveCustomerPrivatePaymentSum()
+
+1. MostActiveCustomerCompanyPaymentSum()
+
+1. MostActiveCustomerPrivateWorkshopAttendee()
