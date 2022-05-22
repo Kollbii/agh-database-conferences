@@ -81,7 +81,7 @@ CREATE TABLE Payments (
     IsCanceled bit  NOT NULL,
     IsWorkshop bit  NOT NULL,
     Participants int  NOT NULL,
-    WorkshopID int  NOT NULL,
+    WorkshopID int	NULL,
     CONSTRAINT Payments_pk PRIMARY KEY  (PaymentID)
 );
 
@@ -106,7 +106,7 @@ CREATE TABLE Workshop (
 );
 
 -- Table: WorkshopParticipatns
-CREATE TABLE WorkshopParticipatns (
+CREATE TABLE WorkshopParticipants (
     WorkshopID int  NOT NULL,
     ParticipantID int  NOT NULL
 );
@@ -157,13 +157,13 @@ ALTER TABLE Payments ADD CONSTRAINT Payments_Customers
     FOREIGN KEY (CustomerID)
     REFERENCES Customers (CustomerID);
 
--- Reference: WorkshopParticipatns_Participants (table: WorkshopParticipatns)
-ALTER TABLE WorkshopParticipatns ADD CONSTRAINT WorkshopParticipatns_Participants
+-- Reference: WorkshopParticipants_Participants (table: WorkshopParticipants)
+ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipants_Participants
     FOREIGN KEY (ParticipantID)
     REFERENCES Participants (ParticipantID);
 
--- Reference: WorkshopParticipatns_Workshop (table: WorkshopParticipatns)
-ALTER TABLE WorkshopParticipatns ADD CONSTRAINT WorkshopParticipatns_Workshop
+-- Reference: WorkshopParticipants_Workshop (table: WorkshopParticipants)
+ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipants_Workshop
     FOREIGN KEY (WorkshopID)
     REFERENCES Workshop (WorkshopID);
 

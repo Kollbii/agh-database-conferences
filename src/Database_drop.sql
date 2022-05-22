@@ -20,9 +20,9 @@ ALTER TABLE Payments DROP CONSTRAINT Payments_Conferences;
 
 ALTER TABLE Payments DROP CONSTRAINT Payments_Customers;
 
-ALTER TABLE WorkshopParticipatns DROP CONSTRAINT WorkshopParticipatns_Participants;
+ALTER TABLE WorkshopParticipatns DROP CONSTRAINT WorkshopParticipants_Participants;
 
-ALTER TABLE WorkshopParticipatns DROP CONSTRAINT WorkshopParticipatns_Workshop;
+ALTER TABLE WorkshopParticipatns DROP CONSTRAINT WorkshopParticipants_Workshop;
 
 ALTER TABLE Payments DROP CONSTRAINT Workshop_Payments;
 

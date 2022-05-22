@@ -62,3 +62,49 @@ values
 (2, 'Phishing', 60, 0, '2022-06-03 10:00:00', '2022-06-03 11:45:00'),
 (2, 'SQL injection', 30, 40, '2022-06-03 11:00:00', '2022-06-03 15:00:00');
 
+
+insert into Participants(ConfID, CompanyName, Firstname, Lastname)
+values 
+(1, NULL, 'Karol', 'Zamek'),
+(1, 3, 'Will', 'Book'),
+(1, 1, 'Alex', 'Mith'),
+(2, NULL, 'Jane', 'Smith'),  --Without workshop
+(2, 1, 'Mary', 'Love'),
+--(2, 2, null, null), -- Not paid in time // Musisz podac kto bo Fname i Lname jest obowiazkowe
+(3, NULL, 'Miguel', 'Gomez'),
+(3, 1, 'Alex', 'Mith'),
+(3, 1, 'Ola', 'Lag');
+
+
+insert into WorkshopParticipants(WorkshopID, ParticipantID)
+values 
+(1, 1),
+(2, 1),
+(2, 2),
+(3, 3),
+(4, 5),
+(5, 6), 
+(6, 7),
+(6, 8),
+(7, 8), -- tutaj pytanie jak robimy z nakladajacymi sie workshopami // ignorujemy bo moze byc na 2 w tym samym czasie
+(7, 9);  
+
+
+insert into Payments(CustomerID, ConfID, BankAccountNumber, TotalPrice, PaymentReservationDate, IsPaid, IsCanceled, IsWorkshop, Participants, WorkshopID)
+values 
+(2, 3, 7784, 100, '2022-04-01 10:00:00', 0,1,0,1,null),
+(2, 3, 7784, 0, '2022-04-01 10:00:00', 0, 1, 1, 1, 5), -- Gosc nie podal danych, canceled
+(1, 2, 1234, 160, '2022-05-14 10:00:00', 1, 0, 0, 2, null), -- 2ppl MyWorld 3rd day 
+(1, 2, 1234, 40, '2022-05-14 10:00:00', 1, 0, 1, 2, 7), -- 2ppl 3rd day SQL
+(4, 1, 3333, 80, '2022-05-18 11:00:00', 0, 0, 0, 1, null), -- Single client to pay
+(5, 2, 8765, 200, '2022-05-17 10:00:00', 0, 0, 0, 1, null); -- Ona placi bardzo czesciami 
+
+-- Initial payment with first invoice can be made like Customers followed by @@identity
+
+insert into Invoices( Ammount, PaymentID, PaymentDate)
+values 
+(320,  3, '2022-05-14 13:00:00'),
+(80,  4, '2022-05-14 13:00:00'),
+(50, 6, '2022-05-17 12:00:00'), --kilka jej platnosci i nie do konca 
+(30, 6, '2022-05-17 14:00:00'),
+(50, 6, '2022-05-18 12:00:00');
