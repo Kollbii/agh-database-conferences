@@ -35,6 +35,16 @@ Values ('North st.', 236799000, 'CA', 07655)
 INSERT INTO PrivateCustomers(CustomerID, Firstname, Lastname)
 Values (@@IDENTITY, 'Miguel', 'Gomez')
 
+Insert into Customers(Address, Phone, Country, PostalCode)
+Values ('Morning st.', 457999000, 'PL', 07835)
+INSERT INTO PrivateCustomers(CustomerID, Firstname, Lastname)
+Values (@@IDENTITY, 'Michu', 'Keyboards')
+
+Insert into Customers(Address, Phone, Country, PostalCode)
+Values ('Godnight st.', 976421000, 'PL', 73655)
+INSERT INTO PrivateCustomers(CustomerID, Firstname, Lastname)
+Values (@@IDENTITY, 'Lukas', 'Pepes')
+
 
 Insert Into Conferences(HostID, ConfName, StartDate, EndDate)
 Values
@@ -86,12 +96,13 @@ values
 (5, 6), 
 (6, 7),
 (6, 8),
-(7, 8), -- tutaj pytanie jak robimy z nakladajacymi sie workshopami // ignorujemy bo moze byc na 2 w tym samym czasie
-(7, 9);  
-
+(7, 8); 
+-- tutaj pytanie jak robimy z nakladajacymi sie workshopami // ignorujemy bo moze byc na 2 w tym samym czasie
 
 insert into Payments(CustomerID, ConfID, BankAccountNumber, TotalPrice, PaymentReservationDate, IsPaid, IsCanceled, IsWorkshop, Participants, WorkshopID)
 values 
+(7, 3, 1234987545312586, 82000, '2022-05-15 10:00:00', 1,0,0,1,null),
+(8, 3, 4567984216574583, 62000, '2022-05-15 10:00:00', 1,0,0,1,null),
 (2, 3, 7784, 100, '2022-04-01 10:00:00', 0,1,0,1,null),
 (2, 3, 7784, 0, '2022-04-01 10:00:00', 0, 1, 1, 1, 5), -- Gosc nie podal danych, canceled
 (1, 2, 1234, 160, '2022-05-14 10:00:00', 1, 0, 0, 2, null), -- 2ppl MyWorld 3rd day 
@@ -103,6 +114,8 @@ values
 
 insert into Invoices( Ammount, PaymentID, PaymentDate)
 values 
+(82000,  7, '2022-05-16 13:00:00'),
+(62000,  8, '2022-05-18 14:20:10'),
 (320,  3, '2022-05-14 13:00:00'),
 (80,  4, '2022-05-14 13:00:00'),
 (50, 6, '2022-05-17 12:00:00'), --kilka jej platnosci i nie do konca 
