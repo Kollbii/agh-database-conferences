@@ -80,7 +80,6 @@ values
 (1, 1, 'Alex', 'Mith'),
 (2, NULL, 'Jane', 'Smith'),  --Without workshop
 (2, 1, 'Mary', 'Love'),
---(2, 2, null, null), -- Not paid in time // Musisz podac kto bo Fname i Lname jest obowiazkowe
 (3, NULL, 'Miguel', 'Gomez'),
 (3, 1, 'Alex', 'Mith'),
 (3, 1, 'Ola', 'Lag');
@@ -88,6 +87,7 @@ values
 
 insert into WorkshopParticipants(WorkshopID, ParticipantID)
 values 
+(3, 1),
 (1, 1),
 (2, 1),
 (2, 2),
@@ -97,7 +97,6 @@ values
 (6, 7),
 (6, 8),
 (7, 8); 
--- tutaj pytanie jak robimy z nakladajacymi sie workshopami // ignorujemy bo moze byc na 2 w tym samym czasie
 
 insert into Payments(CustomerID, ConfID, BankAccountNumber, TotalPrice, PaymentReservationDate, IsPaid, IsCanceled, IsWorkshop, Participants, WorkshopID)
 values 
@@ -118,6 +117,6 @@ values
 (62000,  8, '2022-05-18 14:20:10'),
 (320,  3, '2022-05-14 13:00:00'),
 (80,  4, '2022-05-14 13:00:00'),
-(50, 6, '2022-05-17 12:00:00'), --kilka jej platnosci i nie do konca 
+(50, 6, '2022-05-17 12:00:00'),
 (30, 6, '2022-05-17 14:00:00'),
 (50, 6, '2022-05-18 12:00:00');

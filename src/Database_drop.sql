@@ -1,28 +1,30 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2022-05-14 22:28:53.499
+-- Last modification date: 2022-05-25 19:06:38.85
 
 -- foreign keys
 ALTER TABLE ConfDetails DROP CONSTRAINT Conferences_ConfDetails;
 
 ALTER TABLE Conferences DROP CONSTRAINT Conferences_HostDetails;
 
-ALTER TABLE Workshop DROP CONSTRAINT Conferences_Workshop;
-
 ALTER TABLE CompanyCustomers DROP CONSTRAINT Customers_CompanyCustomers;
 
 ALTER TABLE PrivateCustomers DROP CONSTRAINT Customers_PrivateCustomers;
 
-ALTER TABLE Invoices DROP CONSTRAINT Invoices_Payments;
+ALTER TABLE DayParticipants DROP CONSTRAINT DayParticipants_Participants;
 
-ALTER TABLE Participants DROP CONSTRAINT Participants_Conferences;
+ALTER TABLE DayParticipants DROP CONSTRAINT DayParticipants_Payments;
 
-ALTER TABLE Payments DROP CONSTRAINT Payments_Conferences;
+ALTER TABLE PaymentsHistory DROP CONSTRAINT Invoices_Payments;
+
+ALTER TABLE Payments DROP CONSTRAINT Payments_ConfDetails;
 
 ALTER TABLE Payments DROP CONSTRAINT Payments_Customers;
 
-ALTER TABLE WorkshopParticipatns DROP CONSTRAINT WorkshopParticipants_Participants;
+ALTER TABLE WorkshopParticipants DROP CONSTRAINT WorkshopParticipatns_Participants;
 
-ALTER TABLE WorkshopParticipatns DROP CONSTRAINT WorkshopParticipants_Workshop;
+ALTER TABLE WorkshopParticipants DROP CONSTRAINT WorkshopParticipatns_Workshop;
+
+ALTER TABLE Workshop DROP CONSTRAINT Workshop_ConfDetails;
 
 ALTER TABLE Payments DROP CONSTRAINT Workshop_Payments;
 
@@ -35,19 +37,21 @@ DROP TABLE Conferences;
 
 DROP TABLE Customers;
 
-DROP TABLE HostDetails;
+DROP TABLE DayParticipants;
 
-DROP TABLE Invoices;
+DROP TABLE HostDetails;
 
 DROP TABLE Participants;
 
 DROP TABLE Payments;
 
+DROP TABLE PaymentsHistory;
+
 DROP TABLE PrivateCustomers;
 
 DROP TABLE Workshop;
 
-DROP TABLE WorkshopParticipatns;
+DROP TABLE WorkshopParticipants;
 
 -- sequences
 DROP SEQUENCE CompanyCustomers_seq;

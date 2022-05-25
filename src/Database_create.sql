@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2022-05-14 22:28:53.499
+-- Last modification date: 2022-05-25 19:06:38.85
 
 -- tables
 -- Table: CompanyCustomers
@@ -39,6 +39,13 @@ CREATE TABLE Customers (
     CONSTRAINT Customers_pk PRIMARY KEY  (CustomerID)
 );
 
+-- Table: DayParticipants
+CREATE TABLE DayParticipants (
+    ParticipantID int  NOT NULL,
+    PaymentID int  NOT NULL,
+    CONSTRAINT DayParticipants_pk PRIMARY KEY  (ParticipantID)
+);
+
 -- Table: HostDetails
 CREATE TABLE HostDetails (
     HostID int  NOT NULL IDENTITY(1,1),
@@ -50,20 +57,9 @@ CREATE TABLE HostDetails (
     CONSTRAINT HostDetails_pk PRIMARY KEY  (HostID)
 );
 
--- Table: Invoices
-CREATE TABLE Invoices (
-    InvoiceID int  NOT NULL IDENTITY(1,1),
-    Ammount money  NOT NULL,
-    PaymentID int  NOT NULL,
-    PaymentDate datetime  NOT NULL,
-    CONSTRAINT Invoices_pk PRIMARY KEY  (InvoiceID)
-);
-
 -- Table: Participants
 CREATE TABLE Participants (
-    ParticipantID int  NOT NULL IDENTITY(1,1),
-    ConfID int  NOT NULL,
-    CompanyName char(200)  NULL,
+    ParticipantID int  NOT NULL  IDENTITY(1,1),
     Firstname char(200)  NOT NULL,
     Lastname char(200)  NOT NULL,
     CONSTRAINT Participants_pk PRIMARY KEY  (ParticipantID)
@@ -71,9 +67,9 @@ CREATE TABLE Participants (
 
 -- Table: Payments
 CREATE TABLE Payments (
-    PaymentID int  NOT NULL IDENTITY(1,1),
+    PaymentID int  NOT NULL  IDENTITY(1,1),
     CustomerID int  NOT NULL,
-    ConfID int  NOT NULL,
+    ConfDetailsID int  NOT NULL,
     BankAccountNumber varchar(16)  NOT NULL,
     TotalPrice money  NOT NULL,
     PaymentReservationDate datetime  NOT NULL,
@@ -81,8 +77,17 @@ CREATE TABLE Payments (
     IsCanceled bit  NOT NULL,
     IsWorkshop bit  NOT NULL,
     Participants int  NOT NULL,
-    WorkshopID int	NULL,
+    WorkshopID int  NOT NULL,
     CONSTRAINT Payments_pk PRIMARY KEY  (PaymentID)
+);
+
+-- Table: PaymentsHistory
+CREATE TABLE PaymentsHistory (
+    HistoryID int  NOT NULL IDENTITY(1,1),
+    Ammount money  NOT NULL,
+    PaymentID int  NOT NULL,
+    PaymentDate datetime  NOT NULL,
+    CONSTRAINT PaymentsHistory_pk PRIMARY KEY  (HistoryID)
 );
 
 -- Table: PrivateCustomers
@@ -96,7 +101,7 @@ CREATE TABLE PrivateCustomers (
 -- Table: Workshop
 CREATE TABLE Workshop (
     WorkshopID int  NOT NULL IDENTITY(1,1),
-    ConfID int  NOT NULL,
+    ConfDetailsID int  NOT NULL,
     Topic char(200)  NOT NULL,
     Limit int  NOT NULL,
     Price decimal(15,2)  NULL,
@@ -105,10 +110,12 @@ CREATE TABLE Workshop (
     CONSTRAINT Workshop_pk PRIMARY KEY  (WorkshopID)
 );
 
--- Table: WorkshopParticipatns
+-- Table: WorkshopParticipants
 CREATE TABLE WorkshopParticipants (
+    WorkshopParticipantID int  NOT NULL,
     WorkshopID int  NOT NULL,
-    ParticipantID int  NOT NULL
+    ParticipantID int  NOT NULL,
+    CONSTRAINT WorkshopParticipants_pk PRIMARY KEY  (WorkshopParticipantID)
 );
 
 -- foreign keys
@@ -122,11 +129,6 @@ ALTER TABLE Conferences ADD CONSTRAINT Conferences_HostDetails
     FOREIGN KEY (HostID)
     REFERENCES HostDetails (HostID);
 
--- Reference: Conferences_Workshop (table: Workshop)
-ALTER TABLE Workshop ADD CONSTRAINT Conferences_Workshop
-    FOREIGN KEY (ConfID)
-    REFERENCES Conferences (ConfID);
-
 -- Reference: Customers_CompanyCustomers (table: CompanyCustomers)
 ALTER TABLE CompanyCustomers ADD CONSTRAINT Customers_CompanyCustomers
     FOREIGN KEY (CustomerID)
@@ -137,35 +139,45 @@ ALTER TABLE PrivateCustomers ADD CONSTRAINT Customers_PrivateCustomers
     FOREIGN KEY (CustomerID)
     REFERENCES Customers (CustomerID);
 
--- Reference: Invoices_Payments (table: Invoices)
-ALTER TABLE Invoices ADD CONSTRAINT Invoices_Payments
+-- Reference: DayParticipants_Participants (table: DayParticipants)
+ALTER TABLE DayParticipants ADD CONSTRAINT DayParticipants_Participants
+    FOREIGN KEY (ParticipantID)
+    REFERENCES Participants (ParticipantID);
+
+-- Reference: DayParticipants_Payments (table: DayParticipants)
+ALTER TABLE DayParticipants ADD CONSTRAINT DayParticipants_Payments
     FOREIGN KEY (PaymentID)
     REFERENCES Payments (PaymentID);
 
--- Reference: Participants_Conferences (table: Participants)
-ALTER TABLE Participants ADD CONSTRAINT Participants_Conferences
-    FOREIGN KEY (ConfID)
-    REFERENCES Conferences (ConfID);
+-- Reference: Invoices_Payments (table: PaymentsHistory)
+ALTER TABLE PaymentsHistory ADD CONSTRAINT Invoices_Payments
+    FOREIGN KEY (PaymentID)
+    REFERENCES Payments (PaymentID);
 
--- Reference: Payments_Conferences (table: Payments)
-ALTER TABLE Payments ADD CONSTRAINT Payments_Conferences
-    FOREIGN KEY (ConfID)
-    REFERENCES Conferences (ConfID);
+-- Reference: Payments_ConfDetails (table: Payments)
+ALTER TABLE Payments ADD CONSTRAINT Payments_ConfDetails
+    FOREIGN KEY (ConfDetailsID)
+    REFERENCES ConfDetails (ConfDetailsID);
 
 -- Reference: Payments_Customers (table: Payments)
 ALTER TABLE Payments ADD CONSTRAINT Payments_Customers
     FOREIGN KEY (CustomerID)
     REFERENCES Customers (CustomerID);
 
--- Reference: WorkshopParticipants_Participants (table: WorkshopParticipants)
-ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipants_Participants
+-- Reference: WorkshopParticipatns_Participants (table: WorkshopParticipants)
+ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipatns_Participants
     FOREIGN KEY (ParticipantID)
     REFERENCES Participants (ParticipantID);
 
--- Reference: WorkshopParticipants_Workshop (table: WorkshopParticipants)
-ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipants_Workshop
+-- Reference: WorkshopParticipatns_Workshop (table: WorkshopParticipants)
+ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipatns_Workshop
     FOREIGN KEY (WorkshopID)
     REFERENCES Workshop (WorkshopID);
+
+-- Reference: Workshop_ConfDetails (table: Workshop)
+ALTER TABLE Workshop ADD CONSTRAINT Workshop_ConfDetails
+    FOREIGN KEY (ConfDetailsID)
+    REFERENCES ConfDetails (ConfDetailsID);
 
 -- Reference: Workshop_Payments (table: Payments)
 ALTER TABLE Payments ADD CONSTRAINT Workshop_Payments
