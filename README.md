@@ -1,6 +1,9 @@
 # agh-database-conferences
 University project for DB course in Transact-SQL
 
+### DB diagram
+![Diagram](assets/Database_Model.png)
+
 ### Views 
 
 1. ShowConferences(Day)
