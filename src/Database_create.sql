@@ -44,7 +44,7 @@ CREATE TABLE DayParticipants (
     DayParticipantID int NOT NULL,
     ParticipantID int  NOT NULL,
     PaymentID int  NOT NULL,
-    CONSTRAINT DayParticipantID_pk PRIMARY KEY  (DayParticipantID)
+    CONSTRAINT DayParticipants_pk PRIMARY KEY  (DayParticipantID)
 );
 
 -- Table: HostDetails
