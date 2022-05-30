@@ -14,7 +14,7 @@ CREATE TABLE ConfDetails (
     ConfDetailsID int  NOT NULL IDENTITY(1,1),
     ConfID int  NOT NULL,
     Day date  NOT NULL,
-    Limit int  NOT NULL,
+    Limit int CHECK (Limit >= 0) NOT NULL,
     Price decimal(15,2) CHECK (Price >= 0) NULL,
     CONSTRAINT ConfDetails_pk PRIMARY KEY  (ConfDetailsID)
 );
@@ -25,7 +25,7 @@ CREATE TABLE Conferences (
     HostID int  NOT NULL,
     ConfName char(200)  NOT NULL,
     StartDate datetime  NOT NULL,
-    EndDate datetime  NOT NULL,
+    EndDate datetime CHECK ( EndDate > StartDate) NOT NULL,
     CONSTRAINT Conferences_pk PRIMARY KEY  (ConfID)
 );
 
@@ -33,9 +33,9 @@ CREATE TABLE Conferences (
 CREATE TABLE Customers (
     CustomerID int  NOT NULL IDENTITY(1,1),
     Address char(200)  NOT NULL,
-    Phone varchar(15)  NOT NULL,
+    Phone varchar(15) CHECK (Phone >= 0) NOT NULL,
     Country varchar(60)  NOT NULL,
-    PostalCode varchar(50)  NOT NULL,
+    PostalCode varchar(50) CHECK (PostalCode >= 0) NOT NULL,
     CONSTRAINT Customers_pk PRIMARY KEY  (CustomerID)
 );
 
@@ -52,9 +52,9 @@ CREATE TABLE HostDetails (
     HostID int  NOT NULL IDENTITY(1,1),
     CompanyName char(200)  NOT NULL,
     Address varchar(200)  NOT NULL,
-    Phone varchar(15)  NOT NULL,
+    Phone varchar(15) CHECK (Phone >= 0) NOT NULL,
     Country varchar(60)  NOT NULL,
-    PostalCode varchar(50)  NOT NULL,
+    PostalCode varchar(50) CHECK (PostalCode >= 0) NOT NULL,
     CONSTRAINT HostDetails_pk PRIMARY KEY  (HostID)
 );
 
@@ -71,13 +71,13 @@ CREATE TABLE Payments (
     PaymentID int  NOT NULL  IDENTITY(1,1),
     CustomerID int  NOT NULL,
     ConfDetailsID int  NOT NULL,
-    BankAccountNumber varchar(16)  NOT NULL,
-    TotalPrice money  NOT NULL,
+    BankAccountNumber varchar(16) CHECK (BankAccountNumber >= 0) NOT NULL,
+    TotalPrice money CHECK (TotalPrice >= 0) NOT NULL,
     PaymentReservationDate datetime  NOT NULL,
     IsPaid bit  NOT NULL,
     IsCanceled bit  NOT NULL,
     IsWorkshop bit  NOT NULL,
-    Participants int  NOT NULL,
+    Participants int CHECK (Participants >= 0) NOT NULL,
     WorkshopID int  NOT NULL,
     CONSTRAINT Payments_pk PRIMARY KEY  (PaymentID)
 );
@@ -85,7 +85,7 @@ CREATE TABLE Payments (
 -- Table: PaymentsHistory
 CREATE TABLE PaymentsHistory (
     HistoryID int  NOT NULL IDENTITY(1,1),
-    Ammount money  NOT NULL,
+    Ammount money CHECK (Ammount >= 0) NOT NULL,
     PaymentID int  NOT NULL,
     PaymentDate datetime  NOT NULL,
     CONSTRAINT PaymentsHistory_pk PRIMARY KEY  (HistoryID)
@@ -104,10 +104,10 @@ CREATE TABLE Workshop (
     WorkshopID int  NOT NULL IDENTITY(1,1),
     ConfDetailsID int  NOT NULL,
     Topic char(200)  NOT NULL,
-    Limit int  NOT NULL,
-    Price decimal(15,2)  NULL,
+    Limit int CHECK (Limit >= 0) NOT NULL,
+    Price decimal(15,2) CHECK (Price >= 0) NULL,
     StartWorkshop datetime NOT NULL,
-    EndWorkshop datetime NOT NULL,
+    EndWorkshop datetime CHECK (EndWorkshop > StartWorkshop NOT NULL,
     CONSTRAINT Workshop_pk PRIMARY KEY  (WorkshopID)
 );
 
@@ -277,4 +277,3 @@ CREATE SEQUENCE Workshop_seq
     NO CACHE;
 
 -- End of file.
-
