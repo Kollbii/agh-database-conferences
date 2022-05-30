@@ -25,17 +25,18 @@ CREATE TABLE Conferences (
     HostID int  NOT NULL,
     ConfName char(200)  NOT NULL,
     StartDate datetime  NOT NULL,
-    EndDate datetime CHECK ( EndDate > StartDate) NOT NULL,
-    CONSTRAINT Conferences_pk PRIMARY KEY  (ConfID)
+    EndDate datetime NOT NULL,
+    CONSTRAINT Conferences_pk PRIMARY KEY  (ConfID),
+	CONSTRAINT CHK_ConferenceDates CHECK ( EndDate > StartDate)
 );
 
 -- Table: Customers
 CREATE TABLE Customers (
     CustomerID int  NOT NULL IDENTITY(1,1),
     Address char(200)  NOT NULL,
-    Phone varchar(15) CHECK (Phone >= 0) NOT NULL,
+    Phone varchar(15) NOT NULL,
     Country varchar(60)  NOT NULL,
-    PostalCode varchar(50) CHECK (PostalCode >= 0) NOT NULL,
+    PostalCode varchar(50) NOT NULL,
     CONSTRAINT Customers_pk PRIMARY KEY  (CustomerID)
 );
 
@@ -71,14 +72,14 @@ CREATE TABLE Payments (
     PaymentID int  NOT NULL  IDENTITY(1,1),
     CustomerID int  NOT NULL,
     ConfDetailsID int  NOT NULL,
-    BankAccountNumber varchar(16) CHECK (BankAccountNumber >= 0) NOT NULL,
+    BankAccountNumber varchar(16) NOT NULL,
     TotalPrice money CHECK (TotalPrice >= 0) NOT NULL,
     PaymentReservationDate datetime  NOT NULL,
     IsPaid bit  NOT NULL,
     IsCanceled bit  NOT NULL,
     IsWorkshop bit  NOT NULL,
     Participants int CHECK (Participants >= 0) NOT NULL,
-    WorkshopID int  NOT NULL,
+    WorkshopID int  NULL,
     CONSTRAINT Payments_pk PRIMARY KEY  (PaymentID)
 );
 
@@ -107,8 +108,9 @@ CREATE TABLE Workshop (
     Limit int CHECK (Limit >= 0) NOT NULL,
     Price decimal(15,2) CHECK (Price >= 0) NULL,
     StartWorkshop datetime NOT NULL,
-    EndWorkshop datetime CHECK (EndWorkshop > StartWorkshop NOT NULL,
-    CONSTRAINT Workshop_pk PRIMARY KEY  (WorkshopID)
+    EndWorkshop datetime NOT NULL,
+    CONSTRAINT Workshop_pk PRIMARY KEY  (WorkshopID),
+    CONSTRAINT CHK_WorkshopDate CHECK (EndWorkshop > StartWorkshop)
 );
 
 -- Table: WorkshopParticipants
