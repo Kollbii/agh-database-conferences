@@ -15,7 +15,7 @@ CREATE TABLE ConfDetails (
     ConfID int  NOT NULL,
     Day date  NOT NULL,
     Limit int  NOT NULL,
-    Price decimal(15,2)  NULL,
+    Price decimal(15,2) CHECK (Price >= 0) NULL,
     CONSTRAINT ConfDetails_pk PRIMARY KEY  (ConfDetailsID)
 );
 
@@ -106,14 +106,14 @@ CREATE TABLE Workshop (
     Topic char(200)  NOT NULL,
     Limit int  NOT NULL,
     Price decimal(15,2)  NULL,
-    StartWorkshop datetime  NOT NULL,
-    EndWorkshop datetime  NOT NULL,
+    StartWorkshop datetime NOT NULL,
+    EndWorkshop datetime NOT NULL,
     CONSTRAINT Workshop_pk PRIMARY KEY  (WorkshopID)
 );
 
 -- Table: WorkshopParticipants
 CREATE TABLE WorkshopParticipants (
-    WorkshopParticipantID int  NOT NULL,
+    WorkshopParticipantID int  NOT NULL IDENTITY(1,1),
     WorkshopID int  NOT NULL,
     ParticipantID int  NOT NULL,
     CONSTRAINT WorkshopParticipants_pk PRIMARY KEY  (WorkshopParticipantID)
