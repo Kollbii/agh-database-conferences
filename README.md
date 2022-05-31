@@ -6,26 +6,26 @@ University project for DB course in Transact-SQL
 
 ### Views 
 
-1. ShowConferences(Day)
+1. ShowConferences
 
-1. ShowWorkshops(Day, Conf)
+1. ShowWorkshops
 
-1. ShowParticipants(Day, Conf, Workshop)
+1. ShowParticipants
 
-1. ShowPaymentDetails(CustomerID)
+1. ShowPaymentDetails
 
-1. ShowCustomers()
+1. ShowCustomers
 
-1. PaymetsStatistics()
+1. PaymetsStatistics
 
-1. FreeSeats(Conf, Workshop)
+1. FreeSeatsWorkshops
 
-1. ShowPrice(Conf, Workshop)
+1. ShowPrice
 
-1. MostActiveCustomer()
+1. MostActiveCustomer
 
-1. MostActiveCustomerPrivatePaymentSum()
+1. MostActiveCustomerPrivatePaymentSum
 
-1. MostActiveCustomerCompanyPaymentSum()
+1. MostActiveCustomerCompanyPaymentSum
 
-1. MostActiveCustomerPrivateWorkshopAttendee()
+1. MostActiveCustomerPrivateWorkshopAttendee
