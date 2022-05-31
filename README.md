@@ -14,17 +14,17 @@ University project for DB course in Transact-SQL
 
 1. ShowPaymentDetails not working; planowałam pokazac paymentid, cene, nazwe conf i temat ws, imie i nazwisko uczestnika -> tu problemem moze byc ze nie musi byc zawsze ws i tutaj umiera
 
-1. ShowCustomers not working 
+1. ShowCustomers not working; tak samo, wyniemmie wystepuje imie+nazwisko i companyname i moglby byc null ale to chyba jest problemem -> proba ifnull
 
-1. PaymetsStatistics
+1. PaymetsStatistics done; mowiac szczerze nie wiem czy nie pomieszałam z showpaymentdetails ale nie jest opisane wiec zgaduje; tutaj jest paymentid, totalprice, ispaid,iscanceled, iswh, wsid, historyid, ammount, i daty
 
-1. FreeSeatsWorkshops
+1. FreeSeatsWorkshops nope; tutaj probowałam ale mi nie wyszlo 
 
-1. ShowPrice
+1. ShowPrice 
 
-1. MostActiveCustomer
+1. MostActiveCustomer done; na podstawie waszych rozwiazan 
 
-1. MostActiveCustomerPrivatePaymentSum
+1. MostActiveCustomerPrivatePaymentSum te ponizej wy robiliscie wiec zakładam ze dobrze, bo wyniki wychodza 
 
 1. MostActiveCustomerCompanyPaymentSum
 
