@@ -6,15 +6,15 @@ University project for DB course in Transact-SQL
 
 ### Views 
 
-1. ShowConferences
+1. ShowConferences done
 
-1. ShowWorkshops
+1. ShowWorkshops done
 
-1. ShowParticipants
+1. ShowParticipants done; pokazuje participantid, imie, nazwizko, workshopid, temat ws, i czas startu
 
-1. ShowPaymentDetails
+1. ShowPaymentDetails not working; planowałam pokazac paymentid, cene, nazwe conf i temat ws, imie i nazwisko uczestnika -> tu problemem moze byc ze nie musi byc zawsze ws i tutaj umiera
 
-1. ShowCustomers
+1. ShowCustomers not working 
 
 1. PaymetsStatistics
 
