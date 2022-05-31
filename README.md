@@ -20,7 +20,7 @@ University project for DB course in Transact-SQL
 
 1. FreeSeatsWorkshops nope; tutaj probowałam ale mi nie wyszlo 
 
-1. ShowPrice 
+1. ShowPrice done; ale upewnijcie sie ze o to wam chodzilo
 
 1. MostActiveCustomer done; na podstawie waszych rozwiazan 
 
