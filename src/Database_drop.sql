@@ -2,6 +2,8 @@
 -- Last modification date: 2022-05-25 19:06:38.85
 
 -- foreign keys
+USE u_kollbek
+
 ALTER TABLE ConfDetails DROP CONSTRAINT Conferences_ConfDetails;
 
 ALTER TABLE Conferences DROP CONSTRAINT Conferences_HostDetails;

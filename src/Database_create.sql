@@ -3,6 +3,8 @@
 
 -- tables
 -- Table: CompanyCustomers
+USE u_kollbek
+
 CREATE TABLE CompanyCustomers (
     CustomerID int  NOT NULL,
     CompanyName nvarchar(64)  NOT NULL,
@@ -42,7 +44,7 @@ CREATE TABLE Customers (
 
 -- Table: DayParticipants
 CREATE TABLE DayParticipants (
-    DayParticipantID int NOT NULL,
+    DayParticipantID int NOT NULL IDENTITY(1,1),
     ParticipantID int  NOT NULL,
     PaymentID int  NOT NULL,
     CONSTRAINT DayParticipants_pk PRIMARY KEY  (DayParticipantID)
