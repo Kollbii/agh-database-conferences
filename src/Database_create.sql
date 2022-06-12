@@ -1,10 +1,8 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2022-05-25 19:06:38.85
+-- Last modification date: 2022-05-14 22:28:53.499
 
 -- tables
 -- Table: CompanyCustomers
-USE u_kollbek
-
 CREATE TABLE CompanyCustomers (
     CustomerID int  NOT NULL,
     CompanyName nvarchar(64)  NOT NULL,
@@ -16,8 +14,8 @@ CREATE TABLE ConfDetails (
     ConfDetailsID int  NOT NULL IDENTITY(1,1),
     ConfID int  NOT NULL,
     Day date  NOT NULL,
-    Limit int CHECK (Limit >= 0) NOT NULL,
-    Price decimal(15,2) CHECK (Price >= 0) NULL,
+    Limit int  NOT NULL,
+    Price decimal(15,2)  NULL,
     CONSTRAINT ConfDetails_pk PRIMARY KEY  (ConfDetailsID)
 );
 
@@ -27,27 +25,18 @@ CREATE TABLE Conferences (
     HostID int  NOT NULL,
     ConfName char(200)  NOT NULL,
     StartDate datetime  NOT NULL,
-    EndDate datetime NOT NULL,
-    CONSTRAINT Conferences_pk PRIMARY KEY  (ConfID),
-	CONSTRAINT CHK_ConferenceDates CHECK ( EndDate > StartDate)
+    EndDate datetime  NOT NULL,
+    CONSTRAINT Conferences_pk PRIMARY KEY  (ConfID)
 );
 
 -- Table: Customers
 CREATE TABLE Customers (
     CustomerID int  NOT NULL IDENTITY(1,1),
     Address char(200)  NOT NULL,
-    Phone varchar(15) NOT NULL,
+    Phone varchar(15)  NOT NULL,
     Country varchar(60)  NOT NULL,
-    PostalCode varchar(50) NOT NULL,
+    PostalCode varchar(50)  NOT NULL,
     CONSTRAINT Customers_pk PRIMARY KEY  (CustomerID)
-);
-
--- Table: DayParticipants
-CREATE TABLE DayParticipants (
-    DayParticipantID int NOT NULL IDENTITY(1,1),
-    ParticipantID int  NOT NULL,
-    PaymentID int  NOT NULL,
-    CONSTRAINT DayParticipants_pk PRIMARY KEY  (DayParticipantID)
 );
 
 -- Table: HostDetails
@@ -55,15 +44,26 @@ CREATE TABLE HostDetails (
     HostID int  NOT NULL IDENTITY(1,1),
     CompanyName char(200)  NOT NULL,
     Address varchar(200)  NOT NULL,
-    Phone varchar(15) CHECK (Phone >= 0) NOT NULL,
+    Phone varchar(15)  NOT NULL,
     Country varchar(60)  NOT NULL,
-    PostalCode varchar(50) CHECK (PostalCode >= 0) NOT NULL,
+    PostalCode varchar(50)  NOT NULL,
     CONSTRAINT HostDetails_pk PRIMARY KEY  (HostID)
+);
+
+-- Table: Invoices
+CREATE TABLE Invoices (
+    InvoiceID int  NOT NULL IDENTITY(1,1),
+    Ammount money  NOT NULL,
+    PaymentID int  NOT NULL,
+    PaymentDate datetime  NOT NULL,
+    CONSTRAINT Invoices_pk PRIMARY KEY  (InvoiceID)
 );
 
 -- Table: Participants
 CREATE TABLE Participants (
-    ParticipantID int  NOT NULL  IDENTITY(1,1),
+    ParticipantID int  NOT NULL IDENTITY(1,1),
+    ConfID int  NOT NULL,
+    CompanyName char(200)  NULL,
     Firstname char(200)  NOT NULL,
     Lastname char(200)  NOT NULL,
     CONSTRAINT Participants_pk PRIMARY KEY  (ParticipantID)
@@ -71,27 +71,18 @@ CREATE TABLE Participants (
 
 -- Table: Payments
 CREATE TABLE Payments (
-    PaymentID int  NOT NULL  IDENTITY(1,1),
+    PaymentID int  NOT NULL IDENTITY(1,1),
     CustomerID int  NOT NULL,
-    ConfDetailsID int  NOT NULL,
-    BankAccountNumber varchar(16) NOT NULL,
-    TotalPrice money CHECK (TotalPrice >= 0) NOT NULL,
+    ConfID int  NOT NULL,
+    BankAccountNumber varchar(16)  NOT NULL,
+    TotalPrice money  NOT NULL,
     PaymentReservationDate datetime  NOT NULL,
     IsPaid bit  NOT NULL,
     IsCanceled bit  NOT NULL,
     IsWorkshop bit  NOT NULL,
-    Participants int CHECK (Participants >= 0) NOT NULL,
-    WorkshopID int  NULL,
+    Participants int  NOT NULL,
+    WorkshopID int	NULL,
     CONSTRAINT Payments_pk PRIMARY KEY  (PaymentID)
-);
-
--- Table: PaymentsHistory
-CREATE TABLE PaymentsHistory (
-    HistoryID int  NOT NULL IDENTITY(1,1),
-    Ammount money CHECK (Ammount >= 0) NOT NULL,
-    PaymentID int  NOT NULL,
-    PaymentDate datetime  NOT NULL,
-    CONSTRAINT PaymentsHistory_pk PRIMARY KEY  (HistoryID)
 );
 
 -- Table: PrivateCustomers
@@ -105,22 +96,19 @@ CREATE TABLE PrivateCustomers (
 -- Table: Workshop
 CREATE TABLE Workshop (
     WorkshopID int  NOT NULL IDENTITY(1,1),
-    ConfDetailsID int  NOT NULL,
+    ConfID int  NOT NULL,
     Topic char(200)  NOT NULL,
-    Limit int CHECK (Limit >= 0) NOT NULL,
-    Price decimal(15,2) CHECK (Price >= 0) NULL,
-    StartWorkshop datetime NOT NULL,
-    EndWorkshop datetime NOT NULL,
-    CONSTRAINT Workshop_pk PRIMARY KEY  (WorkshopID),
-    CONSTRAINT CHK_WorkshopDate CHECK (EndWorkshop > StartWorkshop)
+    Limit int  NOT NULL,
+    Price decimal(15,2)  NULL,
+    StartWorkshop datetime  NOT NULL,
+    EndWorkshop datetime  NOT NULL,
+    CONSTRAINT Workshop_pk PRIMARY KEY  (WorkshopID)
 );
 
--- Table: WorkshopParticipants
+-- Table: WorkshopParticipatns
 CREATE TABLE WorkshopParticipants (
-    WorkshopParticipantID int  NOT NULL IDENTITY(1,1),
     WorkshopID int  NOT NULL,
-    ParticipantID int  NOT NULL,
-    CONSTRAINT WorkshopParticipants_pk PRIMARY KEY  (WorkshopParticipantID)
+    ParticipantID int  NOT NULL
 );
 
 -- foreign keys
@@ -134,6 +122,11 @@ ALTER TABLE Conferences ADD CONSTRAINT Conferences_HostDetails
     FOREIGN KEY (HostID)
     REFERENCES HostDetails (HostID);
 
+-- Reference: Conferences_Workshop (table: Workshop)
+ALTER TABLE Workshop ADD CONSTRAINT Conferences_Workshop
+    FOREIGN KEY (ConfID)
+    REFERENCES Conferences (ConfID);
+
 -- Reference: Customers_CompanyCustomers (table: CompanyCustomers)
 ALTER TABLE CompanyCustomers ADD CONSTRAINT Customers_CompanyCustomers
     FOREIGN KEY (CustomerID)
@@ -144,45 +137,35 @@ ALTER TABLE PrivateCustomers ADD CONSTRAINT Customers_PrivateCustomers
     FOREIGN KEY (CustomerID)
     REFERENCES Customers (CustomerID);
 
--- Reference: DayParticipants_Participants (table: DayParticipants)
-ALTER TABLE DayParticipants ADD CONSTRAINT DayParticipants_Participants
-    FOREIGN KEY (ParticipantID)
-    REFERENCES Participants (ParticipantID);
-
--- Reference: DayParticipants_Payments (table: DayParticipants)
-ALTER TABLE DayParticipants ADD CONSTRAINT DayParticipants_Payments
+-- Reference: Invoices_Payments (table: Invoices)
+ALTER TABLE Invoices ADD CONSTRAINT Invoices_Payments
     FOREIGN KEY (PaymentID)
     REFERENCES Payments (PaymentID);
 
--- Reference: Invoices_Payments (table: PaymentsHistory)
-ALTER TABLE PaymentsHistory ADD CONSTRAINT Invoices_Payments
-    FOREIGN KEY (PaymentID)
-    REFERENCES Payments (PaymentID);
+-- Reference: Participants_Conferences (table: Participants)
+ALTER TABLE Participants ADD CONSTRAINT Participants_Conferences
+    FOREIGN KEY (ConfID)
+    REFERENCES Conferences (ConfID);
 
--- Reference: Payments_ConfDetails (table: Payments)
-ALTER TABLE Payments ADD CONSTRAINT Payments_ConfDetails
-    FOREIGN KEY (ConfDetailsID)
-    REFERENCES ConfDetails (ConfDetailsID);
+-- Reference: Payments_Conferences (table: Payments)
+ALTER TABLE Payments ADD CONSTRAINT Payments_Conferences
+    FOREIGN KEY (ConfID)
+    REFERENCES Conferences (ConfID);
 
 -- Reference: Payments_Customers (table: Payments)
 ALTER TABLE Payments ADD CONSTRAINT Payments_Customers
     FOREIGN KEY (CustomerID)
     REFERENCES Customers (CustomerID);
 
--- Reference: WorkshopParticipatns_Participants (table: WorkshopParticipants)
-ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipatns_Participants
+-- Reference: WorkshopParticipants_Participants (table: WorkshopParticipants)
+ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipants_Participants
     FOREIGN KEY (ParticipantID)
     REFERENCES Participants (ParticipantID);
 
--- Reference: WorkshopParticipatns_Workshop (table: WorkshopParticipants)
-ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipatns_Workshop
+-- Reference: WorkshopParticipants_Workshop (table: WorkshopParticipants)
+ALTER TABLE WorkshopParticipants ADD CONSTRAINT WorkshopParticipants_Workshop
     FOREIGN KEY (WorkshopID)
     REFERENCES Workshop (WorkshopID);
-
--- Reference: Workshop_ConfDetails (table: Workshop)
-ALTER TABLE Workshop ADD CONSTRAINT Workshop_ConfDetails
-    FOREIGN KEY (ConfDetailsID)
-    REFERENCES ConfDetails (ConfDetailsID);
 
 -- Reference: Workshop_Payments (table: Payments)
 ALTER TABLE Payments ADD CONSTRAINT Workshop_Payments
@@ -281,3 +264,52 @@ CREATE SEQUENCE Workshop_seq
     NO CACHE;
 
 -- End of file.
+
+
+USE [u_kollbek]
+GO
+/****** Object:  Trigger [dbo].[workshop_show]    Script Date: 12.06.2022 17:24:35 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE OR ALTER TRIGGER [dbo].[workshop_show] on [dbo].[Workshop]
+    AFTER INSERT, DELETE, UPDATE
+AS
+Begin
+select w.WorkshopID, ConfDetailsID, Limit, count(ParticipantID) as 'TakenSeats' from Workshop w 
+join WorkshopParticipants wp on wp.WorkshopID=w.WorkshopID
+group by w.WorkshopID, ConfDetailsID, Limit
+end
+    
+USE [u_kollbek]
+GO
+/****** Object:  Trigger [dbo].[Show_Remainder_Payments]    Script Date: 12.06.2022 17:24:18 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE OR ALTER TRIGGER [dbo].[Show_Remainder_Payments] on [dbo].[Payments]
+    AFTER INSERT, DELETE, UPDATE
+AS
+Begin
+select p.PaymentID,MAX(TotalPrice)-SUM(Ammount) from payments as p
+join PaymentsHistory ph on p.paymentID = ph.paymentID
+group by p.PaymentID
+end
+
+USE [u_kollbek]
+GO
+/****** Object:  Trigger [dbo].[Show_Remainder_PaymentsHistory]    Script Date: 12.06.2022 17:23:48 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE OR ALTER TRIGGER [dbo].[Show_Remainder_PaymentsHistory] on [dbo].[PaymentsHistory]
+    AFTER INSERT, DELETE, UPDATE
+AS
+Begin
+select p.PaymentID,MAX(TotalPrice)-SUM(Ammount) from payments as p
+join PaymentsHistory ph on p.paymentID = ph.paymentID
+group by p.PaymentID
+end
