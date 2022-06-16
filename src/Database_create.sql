@@ -66,6 +66,7 @@ CREATE TABLE Participants (
     CompanyName char(200)  NULL,
     Firstname char(200)  NOT NULL,
     Lastname char(200)  NOT NULL,
+	Phone char(15) NOT NULL,
     CONSTRAINT Participants_pk PRIMARY KEY  (ParticipantID)
 );
 
@@ -263,53 +264,32 @@ CREATE SEQUENCE Workshop_seq
     NO CYCLE
     NO CACHE;
 
--- End of file.
+--Triggers
 
-
-USE [u_kollbek]
-GO
-/****** Object:  Trigger [dbo].[workshop_show]    Script Date: 12.06.2022 17:24:35 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE OR ALTER TRIGGER [dbo].[workshop_show] on [dbo].[Workshop]
-    AFTER INSERT, DELETE, UPDATE
+CREATE TRIGGER [dbo].[workshop_show] on [dbo].[Workshop]
+AFTER INSERT, DELETE, UPDATE
 AS
 Begin
-select w.WorkshopID, ConfDetailsID, Limit, count(ParticipantID) as 'TakenSeats' from Workshop w 
-join WorkshopParticipants wp on wp.WorkshopID=w.WorkshopID
-group by w.WorkshopID, ConfDetailsID, Limit
-end
+SELECT w.WorkshopID, ConfDetailsID, Limit, count(ParticipantID) as 'TakenSeats' FROM Workshop w 
+JOIN WorkshopParticipants wp on wp.WorkshopID=w.WorkshopID
+GROUP BY w.WorkshopID, ConfDetailsID, Limit
+END
     
-USE [u_kollbek]
-GO
-/****** Object:  Trigger [dbo].[Show_Remainder_Payments]    Script Date: 12.06.2022 17:24:18 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE OR ALTER TRIGGER [dbo].[Show_Remainder_Payments] on [dbo].[Payments]
-    AFTER INSERT, DELETE, UPDATE
+CREATE TRIGGER [dbo].[Show_Remainder_Payments] on [dbo].[Payments]
+AFTER INSERT, DELETE, UPDATE
 AS
 Begin
-select p.PaymentID,MAX(TotalPrice)-SUM(Ammount) from payments as p
-join PaymentsHistory ph on p.paymentID = ph.paymentID
-group by p.PaymentID
-end
+SELECT p.PaymentID,MAX(TotalPrice)-SUM(Ammount) FROM payments as p
+JOIN PaymentsHistory ph on p.paymentID = ph.paymentID
+GROUP BY p.PaymentID
+END
 
-USE [u_kollbek]
-GO
-/****** Object:  Trigger [dbo].[Show_Remainder_PaymentsHistory]    Script Date: 12.06.2022 17:23:48 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE OR ALTER TRIGGER [dbo].[Show_Remainder_PaymentsHistory] on [dbo].[PaymentsHistory]
-    AFTER INSERT, DELETE, UPDATE
+CREATE TRIGGER [dbo].[Show_Remainder_PaymentsHistory] on [dbo].[PaymentsHistory]
+AFTER INSERT, DELETE, UPDATE
 AS
 Begin
-select p.PaymentID,MAX(TotalPrice)-SUM(Ammount) from payments as p
-join PaymentsHistory ph on p.paymentID = ph.paymentID
-group by p.PaymentID
-end
+SELECT p.PaymentID,MAX(TotalPrice)-SUM(Ammount) FROM payments as p
+JOIN PaymentsHistory ph on p.paymentID = ph.paymentID
+GROUP BY p.PaymentID
+END
+-- End of file.
